@@ -1,0 +1,33 @@
+# Self-host ForgeKit + a reverse proxy with TLS-ready structure.
+# Usage: docker compose up -d
+services:
+  forgekit:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # Optional reverse proxy. Point your domain's DNS here and add certs,
+  # or deploy the app itself behind your existing edge (Cloudflare, Caddy…).
+  # caddy:
+  #   image: caddy:2-alpine
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile:ro
+  #     - caddy_data:/data
+  #   depends_on:
+  #     - forgekit
+
+volumes:
+  caddy_data:

@@ -1,0 +1,14 @@
+# Normalize line endings — repo is LF everywhere, Windows gets working-copy CRLF
+* text=auto eol=lf
+
+# Windows scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binaries
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.zip binary
